@@ -1,2 +1,6 @@
-# ransomwatch-alert
-랜섬웨어 피해 알림 시스템
+.
+├── generate_posts.py
+├── .github/
+│   └── workflows/
+│       └── ransomwatch.yml
+└── README.md (옵션)
