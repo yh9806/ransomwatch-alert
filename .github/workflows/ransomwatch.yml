@@ -1,0 +1,27 @@
+name: Ransomwatch Parser (예외 그룹 제외)
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"  # 10분마다 자동 실행
+  workflow_dispatch:        # 수동 실행도 가능
+
+jobs:
+  run-parser:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout this repo
+        uses: actions/checkout@v3
+
+      - name: Clone ransomwatch repo
+        run: git clone https://github.com/joshhighet/ransomwatch.git ransomwatch-code
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: pip install requests beautifulsoup4
+
+      - name: Run Parser (예외 그룹 제외)
+        run: python generate_posts.py
