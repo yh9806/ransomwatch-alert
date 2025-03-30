@@ -2,19 +2,21 @@ name: Ransomware Alert System
 
 on:
   schedule:
-    - cron: "*/10 * * * *"  # ⏱️ 10분마다 실행
-  workflow_dispatch:         # ▶️ 수동 실행도 가능
+    - cron: "*/10 * * * *"  # ⏱️ 10분마다 자동 실행
+  workflow_dispatch:        # ▶️ 수동 실행 버튼 활성화
 
 jobs:
   check-ransomwatch:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout this repo
         uses: actions/checkout@v3
 
-      - name: Clone ransomwatch repo
-        run: git clone https://github.com/joshhighet/ransomwatch.git
+      - name: Download ransomwatch data
+        run: |
+          mkdir ransomwatch-data
+          curl -s -o ransomwatch-data/posts.json https://raw.githubusercontent.com/joshhighet/ransomwatch/main/data/posts.json
+          curl -s -o ransomwatch-data/groups.json https://raw.githubusercontent.com/joshhighet/ransomwatch/main/data/groups.json
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -22,12 +24,9 @@ jobs:
           python-version: '3.10'
 
       - name: Install dependencies
-        run: pip install -r ransomwatch/requirements.txt
+        run: pip install requests
 
-      - name: Step 1 - Run ransomwatch parser
-        run: python ransomwatch-code/parse.py
-
-      - name: Step 2 - Run Alert Script
+      - name: Run Alert Script
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
