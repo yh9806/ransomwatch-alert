@@ -25,7 +25,7 @@ jobs:
         run: pip install -r ransomwatch/requirements.txt
 
       - name: Step 1 - Run ransomwatch parser
-        run: python ransomwatch/parse.py
+        run: python ransomwatch-code/parse.py
 
       - name: Step 2 - Run Alert Script
         env:
