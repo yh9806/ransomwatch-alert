@@ -98,15 +98,6 @@ def main():
     for g in groups:
         all_posts.extend(extract_posts_from_group(g))
 
-    # 테스트용 유출 알림 추가
-    all_posts.append({
-        "id": "TEST::example.co.kr",
-        "group": "TEST",
-        "title": "example.co.kr",
-        "url": "http://fake-leak-site.onion/test",
-        "timestamp": datetime.utcnow().isoformat()
-    })
-
     os.makedirs("ransomwatch-data", exist_ok=True)
     with open(OUTPUT_FILE, "w") as f:
         json.dump(all_posts, f, indent=2)
