@@ -13,11 +13,10 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Download ransomwatch data
-  run: |
-    mkdir ransomwatch-data
-    curl -s -L -o ransomwatch-data/posts.json https://raw.githubusercontent.com/joshhighet/ransomwatch/main/data/posts.json
-    curl -s -L -o ransomwatch-data/groups.json https://raw.githubusercontent.com/joshhighet/ransomwatch/main/data/groups.json
-
+        run: |
+          mkdir ransomwatch-data
+          curl -s -L -o ransomwatch-data/posts.json https://raw.githubusercontent.com/joshhighet/ransomwatch/main/data/posts.json
+          curl -s -L -o ransomwatch-data/groups.json https://raw.githubusercontent.com/joshhighet/ransomwatch/main/data/groups.json
 
       - name: Set up Python
         uses: actions/setup-python@v4
