@@ -1,12 +1,12 @@
-name: Ransomwatch Parser (예외 그룹 제외)
+name: Ransomwatch Alert System (with Telegram)
 
 on:
   schedule:
-    - cron: "*/10 * * * *"  # 10분마다 자동 실행
-  workflow_dispatch:        # 수동 실행도 가능
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
 
 jobs:
-  run-parser:
+  run-alert:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout this repo
@@ -23,5 +23,8 @@ jobs:
       - name: Install dependencies
         run: pip install requests beautifulsoup4
 
-      - name: Run Parser (예외 그룹 제외)
-        run: python generate_posts.py
+      - name: Run Alert Script
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python generate_posts_with_alert.py
