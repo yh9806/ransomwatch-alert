@@ -6,8 +6,8 @@ from datetime import datetime
 TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN")
 CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 
-POSTS_PATH = "ransomwatch/data/posts.json"
-GROUPS_PATH = "ransomwatch/data/groups.json"
+POSTS_PATH = "ransomwatch-code/data/posts.json"
+GROUPS_PATH = "ransomwatch-code/data/groups.json"
 CACHE_FILE = "prev_posts.json"
 GROUP_CACHE_FILE = "prev_groups.json"
 
