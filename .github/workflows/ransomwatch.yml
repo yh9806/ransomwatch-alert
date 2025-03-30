@@ -26,6 +26,9 @@ jobs:
       - name: Install dependencies
         run: pip install requests
 
+      - name: Debug - 확인용 posts.json 내용 보기
+        run: head -n 20 ransomwatch-data/posts.json
+
       - name: Run Alert Script
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
