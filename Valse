@@ -1,0 +1,6 @@
+ransomwatch-alert/
+├── ransom_alert.py         # 핵심 알림 코드
+├── requirements.txt        # 필요한 패키지
+├── .github/
+│   └── workflows/
+│       └── ransomwatch.yml # GitHub Actions 자동 실행 설정
