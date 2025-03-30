@@ -1,4 +1,4 @@
-name: Ransomwatch Alert System (with Telegram)
+name: Ransomwatch Alert System (Advanced)
 
 on:
   schedule:
@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  run-alert:
+  run-advanced:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout this repo
@@ -23,8 +23,8 @@ jobs:
       - name: Install dependencies
         run: pip install requests beautifulsoup4
 
-      - name: Run Alert Script
+      - name: Run Advanced Alert Script
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: python generate_posts_with_alert.py
+        run: python generate_posts_advanced.py
