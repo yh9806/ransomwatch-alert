@@ -18,6 +18,8 @@ EXCLUDE_GROUPS = [g.lower() for g in [
     "trigona", "cactus", "darkrace", "blackbasta"
 ]]
 
+failed_groups = set()  # ❗ 크롤링 실패 그룹 수집용
+
 def load_groups():
     with open(GROUPS_FILE, "r") as f:
         groups = json.load(f)
@@ -29,6 +31,8 @@ def extract_posts_from_group(group):
         try:
             resp = requests.get(onion_url, timeout=15)
             if resp.status_code != 200:
+                print(f"[!] 접속 실패 ({resp.status_code}) - {group['name']} - {onion_url}")
+                failed_groups.add(group["name"])
                 continue
             soup = BeautifulSoup(resp.text, "html.parser")
             titles = soup.find_all("h3") + soup.find_all("h2") + soup.find_all("a")
@@ -44,7 +48,9 @@ def extract_posts_from_group(group):
                     "url": post_url,
                     "timestamp": datetime.utcnow().isoformat()
                 })
-        except:
+        except Exception as e:
+            print(f"[❌] 크롤링 예외 발생 - {group['name']} - {onion_url} : {str(e)}")
+            failed_groups.add(group["name"])
             continue
     return posts
 
@@ -90,6 +96,18 @@ def detect_new_groups(groups):
         send_telegram_html(msg)
     save_json_set(GROUP_CACHE, current)
 
+def send_daily_summary(count, failed):
+    now = datetime.utcnow().strftime("%Y-%m-%d")
+    msg = (
+        f"📊 <b>[일일 랜섬웨어 유출 요약]</b>\n\n"
+        f"📅 <b>날짜:</b> {now}\n"
+        f"📦 <b>총 감지된 유출:</b> <code>{count}</code>건\n"
+    )
+    if failed:
+        failed_list = ", ".join(sorted(failed))
+        msg += f"❌ <b>크롤링 실패:</b> {len(failed)}건 ({failed_list})"
+    send_telegram_html(msg)
+
 def main():
     groups = load_groups()
     detect_new_groups(groups)
@@ -110,6 +128,9 @@ def main():
 
     save_json_set(POST_CACHE, set(p["id"] for p in all_posts))
     print(f"[✔] 유출 감지 완료: 총 {len(new_posts)}건")
+
+    # 📢 요약 알림 전송
+    send_daily_summary(len(new_posts), failed_groups)
 
 if __name__ == "__main__":
     main()
