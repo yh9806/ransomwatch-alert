@@ -2,8 +2,8 @@ name: Daily Ransomware Alert
 
 on:
   schedule:
-    - cron: '0 15 * * *'
-  workflow_dispatch:
+    - cron: '0 15 * * *'     # 매일 한국 자정 (UTC 15:00)
+  workflow_dispatch:          # 수동 실행도 가능
 
 jobs:
   alert:
@@ -20,7 +20,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt
+          pip install -r requirements-playwright.txt
 
       - name: Run Valse.py alert script
         working-directory: .
