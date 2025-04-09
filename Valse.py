@@ -6,7 +6,7 @@ from urllib.parse import urljoin
 from datetime import datetime
 
 GROUPS_FILE = "ransomwatch-code/groups.json"
-OUTPUT_FILE = "ransomwatch-data/posts.json"
+OUTPUT_FILE = "posts.json"  # ✅ 수정: 루트에 바로 저장
 POST_CACHE = "prev_posts.json"
 GROUP_CACHE = "prev_groups.json"
 
@@ -116,7 +116,6 @@ def main():
     for g in groups:
         all_posts.extend(extract_posts_from_group(g))
 
-    os.makedirs("ransomwatch-data", exist_ok=True)
     with open(OUTPUT_FILE, "w") as f:
         json.dump(all_posts, f, indent=2)
 
