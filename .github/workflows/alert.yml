@@ -22,6 +22,9 @@ jobs:
         run: |
           pip install -r requirements-playwright.txt
 
+      - name: 🔁 (테스트용) prev_posts.json 리셋
+        run: echo "[]" > prev_posts.json
+
       - name: Run Valse.py alert script
         working-directory: .
         env:
